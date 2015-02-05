@@ -1,0 +1,36 @@
+
+newpp<-c(696.08, 118.07,  89.53,  89.42,  69.48,  39.72,   5.42,   6.58,  33.80 , 67.19, 304.74, 347.42)
+newtmax<-c(4.28,  4.90 , 6.77,  8.61 ,13.12 ,17.87, 22.57, 22.33 ,18.03 ,12.08,  7.34,  4.39)
+newtmin<-c(-5.22 ,-4.60, -2.73 ,-0.89 , 3.62,  8.37 ,13.07 ,12.83,  8.53,  2.58 ,-2.16, -5.11)
+
+ppmax<-100
+ppdiv=20
+ymax=800
+big.unit<-(ymax-ppmax)/ppdiv
+newpp1<-newpp
+newpp1[newpp>ppmax]<-ppmax
+newpp2<-newpp
+newpp2[newpp1<ppmax]<-0
+newpp2<-newpp2-ppmax
+newpp2[newpp2<0]<-0
+newpp3<-newpp2/big.unit
+newpp4<-newpp3+newpp1
+
+par(mar=c(4,4,4,4))
+mm<-barplot(newpp4, ylim=c(-20,ppmax+ppdiv), ylab="",axes=T,col="black",yaxt="n") #plots precip
+box()
+par(new=T)
+mm<-barplot(newpp1, ylim=c(-20,ppmax+ppdiv), ylab="",axes=T,yaxt="n") #plots precip
+abline(h=ppmax, lty=2)
+axis(xaxs="r", 4, at=seq(0,ppmax,ppdiv),labels=seq(0,ppmax,ppdiv),las=1) #precip y axis, right
+axis(xaxs="r", 4, at=c(ppmax+ppdiv),labels=c(ymax),las=1) #precip y axis, right
+# axis(xaxs="r", 4, at=c(ppmax+ppdiv/2,ppmax+ppdiv),labels=c(ppmax+(ymax-ppmax)/2,ymax),las=1) #precip y axis, right
+lines(2*newtmax~mm, ylim=c(-10,ppmax), ylab="", type="l",yaxs="i",col="red",lwd=2) #plots max temp
+lines(2*newtmin~mm, ylim=c(-10,ppmax), ylab="", xlab="month", type="l",yaxs="i",col="blue",lwd=2) #plots min temp
+box()
+axis(xaxs="r", 2, at=seq(-20,100,20),labels=seq(-10,50,10), "Temp (ºC)") #temp y axis,left
+axis(xaxs="r",1,at=mm,labels=1:12)
+mtext(side=1, "Month",line=2) # x axis label
+mtext(side=2, "Temp (ºC)",line=2) # left y axis label
+mtext(side=4, "Precip (mm)",line=2) # right y axis label
+
